@@ -16,6 +16,10 @@ export default function createRoutes(store) {
   // Create reusable async injectors using getAsyncInjectors factory
   const { injectReducer, injectSagas } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
 
+  import('containers/App/Sagas')
+  .then((sagas)=>{injectSagas(sagas.default)})
+  .catch(errorLoading);
+
   return [
     {
       path: '/',
@@ -33,7 +37,33 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
+      onEnter: ()=>{console.log("entered new component");},
+      childRoutes: [
+        {
+          path: '/Login',
+          name: 'login',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/LoginPage/reducers'),
+              import('containers/LoginPage')
+            ]);
+            const renderRoute = loadModule(cb);
+            importModules.then(([reducer, component]) => {
+              injectReducer('login', reducer.default)
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+            // import('containers/LoginPage')
+            //   .then(loadModule(cb))
+            //   .catch(errorLoading);
+            }
+          }
+      ]
+    },
+    {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

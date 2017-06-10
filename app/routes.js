@@ -17,12 +17,12 @@ export default function createRoutes(store) {
   const { injectReducer, injectSagas } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
 
   import('containers/App/Sagas')
-  .then((sagas)=>{injectSagas(sagas.default)})
+  .then((sagas) => { injectSagas(sagas.default); })
   .catch(errorLoading);
 
   return [
     {
-      onEnter: ()=>{console.log("entered new component");},
+      onEnter: () => { console.log('entered new component'); },
       childRoutes: [
         {
           path: '/',
@@ -47,11 +47,11 @@ export default function createRoutes(store) {
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('containers/LoginPage/reducers'),
-              import('containers/LoginPage')
+              import('containers/LoginPage'),
             ]);
             const renderRoute = loadModule(cb);
             importModules.then(([reducer, component]) => {
-              injectReducer('login', reducer.default)
+              injectReducer('login', reducer.default);
               renderRoute(component);
             });
 
@@ -59,9 +59,9 @@ export default function createRoutes(store) {
             // import('containers/LoginPage')
             //   .then(loadModule(cb))
             //   .catch(errorLoading);
-            }
-          }
-      ]
+          },
+        },
+      ],
     },
     {
       path: '*',

@@ -1,9 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import {
+  connect
+} from 'react-redux';
+import {
+  createStructuredSelector
+} from 'reselect';
 
-import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
+import {
+  changeUsername
+} from './actions';
+
+import {
+  loginRequest
+} from 'containers/App/actions';
+import {
+  makeSelectUsername
+} from './selectors';
 
 
 class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -12,6 +24,9 @@ class LoginPage extends React.PureComponent { // eslint-disable-line react/prefe
       <h1>
         Login page
         <input value={this.props.username} onChange={this.props.onChangeUsername} />
+        <button onClick = {this.props.onLoginClicked}>
+          HAHAHA
+        </button>
       </h1>
     );
   }
@@ -23,7 +38,11 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value))
+    onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
+    onLoginClicked: () => dispatch(loginRequest({
+      username: 'hamza@hassan.com',
+      password: '123456'
+    })),
   };
 }
 

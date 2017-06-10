@@ -22,25 +22,25 @@ export default function createRoutes(store) {
 
   return [
     {
-      path: '/',
-      name: 'home',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/HomePage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
       onEnter: ()=>{console.log("entered new component");},
       childRoutes: [
+        {
+          path: '/',
+          name: 'home',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/HomePage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
         {
           path: '/Login',
           name: 'login',

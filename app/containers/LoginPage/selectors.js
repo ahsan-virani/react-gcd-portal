@@ -2,12 +2,18 @@ import { createSelector } from 'reselect';
 
 const selectLogin = (state) => state.get('login');
 
-const makeSelectUsername = () => createSelector(
-  selectLogin,
-  (loginState) => loginState.get('username')
+const makeSelectEmail = () => createSelector(
+	selectLogin,
+	(loginState) => loginState.get('email')
+);
+
+const makeSelectPassword = () => createSelector(
+	selectLogin,
+	(loginState) => loginState.get('password')
 );
 
 export {
-  selectLogin,
-  makeSelectUsername,
+	selectLogin,
+	makeSelectEmail,
+	makeSelectPassword
 };

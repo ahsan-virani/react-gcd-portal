@@ -9,4 +9,8 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const CHANGE_USERNAME = 'boilerplate/Home/CHANGE_USERNAME';
+export const ADD_COIN = 'gcd/Wallet/ADD_COIN';
+export const WITHDRAW_COIN = 'gcd/Wallet/WITHDRAW_COIN';
+export const MODAL_ADD_COIN = 'gcd/Wallet/MODAL_ADD_COIN';
+export const MODAL_WITHDRAW_COIN = 'gcd/Wallet/MODAL_WITHDRAW_COIN';
+export const REQUEST_ADDRESS = 'gcd/Wallet/REQUEST_ADDRESS';

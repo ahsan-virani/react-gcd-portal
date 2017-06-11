@@ -1,17 +1,26 @@
-/**
- * Homepage selectors
- */
-
 import { createSelector } from 'reselect';
 
-const selectHome = (state) => state.get('home');
+const selectWallet = (state) => state.get('wallet');
 
-const makeSelectUsername = () => createSelector(
-  selectHome,
-  (homeState) => homeState.get('username')
+const makeShowModal = () => createSelector(
+	selectWallet,
+	(walletState) => walletState.get('showModal')
 );
 
+const makeModalType = () => createSelector(
+	selectWallet,
+	(walletState) => walletState.get('modalType')
+);
+
+const makeCoinType = () => createSelector(
+	selectWallet,
+	(walletState) => walletState.get('coinType')
+);
+
+
 export {
-  selectHome,
-  makeSelectUsername,
+	selectWallet,
+	makeShowModal,
+	makeCoinType,
+	makeModalType
 };

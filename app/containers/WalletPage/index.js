@@ -3,28 +3,52 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import BannerImg from './inner-banner.jpg';
-import { Table ,Grid, Row ,Col,Clearfix } from 'react-bootstrap';
+import { FormControl, Modal, Button,Table ,Grid, Row ,Col,Clearfix } from 'react-bootstrap';
 import './style.css';
 import WalletRecordRow from 'components/WalletRow';
+import { addCoin, withdrawCoin, requestAddress } from './actions';
+import { makeShowModal, makeModalType, makeCoinType} from './selectors';
+import { fromJS } from 'immutable';
 
 
 
-export default class WalletPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class WalletPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
      getRowForWalletRecord(name, sum, bal){
      var rows = [];
      for (var i =0; i<5; i++){
-       rows.push(<WalletRecordRow name={name} sum={sum} bal={bal}/>)
+       rows.push(<WalletRecordRow name={name+i} sum={sum} bal={bal} onAddButtonClick={this.onRowAddButtonClick.bind(this)} />)
      }
      return rows;
+   }
+
+   onRowAddButtonClick(name){
+     console.log('coin Name ',name);
+      this.props.onAddCoin(true,name);
    }
 
   render() {
 
     var rows = this.getRowForWalletRecord("abc", "abc", "anc");
 
+    var modalContentAdd = (<FormControl  type="text" value={this.props.coinType} readOnly />);
+
     return (
+
       <div >
+        <Modal show={this.props.showModal} onHide={()=>this.props.onAddCoin(false)} backdrop="static">
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                { modalContentAdd }
+
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={()=>this.props.requestAddress(coinType)}>Generate Address</Button>
+            </Modal.Footer>
+          </Modal>
+
         <Helmet
           title="Wallet"
           meta={[
@@ -33,9 +57,12 @@ export default class WalletPage extends React.PureComponent { // eslint-disable-
         />
       <img className="bannerImg" src={BannerImg} alt="GlobalCoinDex" />
 
+
+
         <div className="captionBanner">
             <h2>WALLET </h2>
         </div>
+
 
         <Grid>
           <Row className="show-grid balances">
@@ -134,5 +161,22 @@ export default class WalletPage extends React.PureComponent { // eslint-disable-
     );
   }
 
-
 }
+
+
+const mapStateToProps = createStructuredSelector({
+	showModal: makeShowModal(),
+	modalType: makeModalType(),
+  coinType: makeCoinType(),
+});
+
+export function mapDispatchToProps(dispatch) {
+	return {
+		onAddCoin: (show,name) => dispatch(addCoin(show,name)),
+    onRequestAddress: (coinType) => dispatch(requestAddress(coinType)),
+	};
+}
+
+
+// Wrap the component to inject dispatch and state into it
+export default connect(mapStateToProps, mapDispatchToProps)(WalletPage);

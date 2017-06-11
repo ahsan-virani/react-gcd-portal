@@ -1,27 +1,34 @@
 import { fromJS } from 'immutable';
 
 import {
-	CHANGE_FORM,
+	ADD_COIN,
+	WITHDRAW_COIN,
+	MODAL_ADD_COIN,
+	MODAL_WITHDRAW_COIN
 } from './constants';
 
 // The initial state of the App
 const initialState = fromJS({
-	email: '',
-	password: '',
+	showModal: false,
+	modalType: '',
+	coinType: '',
 });
 
-function loginReducer(state = initialState, action) {
+function walletReducer(state = initialState, action) {
 	switch (action.type) {
-		case CHANGE_FORM:
-
-			// Delete prefixed '@' from the github username
-			console.log("change username reducer called");
+		case ADD_COIN:
 			return state
-				.set('email', action.email)
-				.set('password', action.password);
+				.set('showModal', action.show)
+				.set('modalType', MODAL_ADD_COIN)
+				.set('coinType', action.coinType);
+		case WITHDRAW_COIN:
+			return state
+				.set('showModal', action.show)
+				.set('modalType', MODAL_WITHDRAW_COIN)
+				.set('coinType', action.coinType);
 		default:
 			return state;
 	}
 }
 
-export default loginReducer;
+export default walletReducer;

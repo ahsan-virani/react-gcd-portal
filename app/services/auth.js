@@ -1,5 +1,5 @@
 import request from '../utils/request';
-import localStorage from 'localStorage';
+// import localStorage from 'localStorage';
 
 // let localStorage;
 
@@ -11,62 +11,67 @@ import localStorage from 'localStorage';
 //   // If not, use the browser one
 //   localStorage = global.window.localStorage;
 // }
+let localStorage = global.window.localStorage;
 
 const auth = {
-  /**
-   * Logs a user in, returning a promise with `true` when done
-   * @param  {string} username The username of the user
-   * @param  {string} password The password of the user
-   */
-  login(username, password) {
+	/**
+	 * Logs a user in, returning a promise with `true` when done
+	 * @param  {string} username The username of the user
+	 * @param  {string} password The password of the user
+	 */
+	login(username, password) {
+		console.log('login(username', username, password);
 
-    if (auth.loggedIn()) return Promise.resolve(true);
-    console.log('login(username, password) {');
-    // Post a fake request
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        password
-      }),
-    };
-    return request('http://localhost:4040/api/auth/login', options)
-      .then(response => {
-        // Save token to local storage
-        localStorage.token = response.token;
-        return Promise.resolve(true);
-      });
-  },
-  /**
-   * Logs the current user out
-   */
-  logout() {
-    return request.post('/logout');
-  },
-  /**
-   * Checks if a user is logged in
-   */
-  loggedIn() {
-    return !!localStorage.token;
-  },
-  /**
-   * Registers a user and then logs them in
-   * @param  {string} username The username of the user
-   * @param  {string} password The password of the user
-   */
-  register(username, password) {
-    // Post a fake request
-    return request.post('/register', {
-        username,
-        password
-      })
-      // Log user in after registering
-      .then(() => auth.login(username, password));
-  },
-  onChange() {}
+		if (auth.loggedIn()) {
+			console.log("auth.loggedIn");
+			return Promise.resolve(true);
+		}
+		console.log('login(username, password) {');
+		// Post a fake request
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				username,
+				password
+			}),
+		};
+		return request('http://10.1.18.151:4040/api/auth/login', options)
+			.then(response => {
+				// Save token to local storage
+				localStorage.token = response.token;
+				return Promise.resolve(true);
+			});
+	},
+	/**
+	 * Logs the current user out
+	 */
+	logout() {
+		return request.post('/logout');
+	},
+	/**
+	 * Checks if a user is logged in
+	 */
+	loggedIn() {
+		return !!localStorage.token;
+	},
+	/**
+	 * Registers a user and then logs them in
+	 * @param  {string} username The username of the user
+	 * @param  {string} password The password of the user
+	 */
+	register(username, password) {
+		// Post a fake request
+		return request.post('/register', {
+				username,
+				password
+			})
+			// Log user in after registering
+			.then(() => auth.login(username, password));
+	},
+	onChange() {}
 };
 
 export default auth;

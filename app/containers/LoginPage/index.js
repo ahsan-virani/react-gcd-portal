@@ -99,7 +99,8 @@ export function mapDispatchToProps(dispatch) {
 	return {
 		onChangeForm: (email, password) => dispatch(changeForm(email, password)),
 		onLogin: (email, password) => {
-			console.log('login agya', email, password);
+			console.log('email, pass: ', email, password);
+			dispatch(loginRequest({ email, password }));
 		},
 	};
 }

@@ -1,9 +1,6 @@
 import { take, call, put, select, cancel, takeLatest, race, } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { browserHistory } from 'react-router';
-// import { LOGIN_REQUEST } from './constants';
-import { reposLoaded, repoLoadingError, } from 'containers/App/actions';
-import { makeSelectEmail, makeSelectPassword } from 'containers/LoginPage/selectors';
 
 import {
 	SENDING_REQUEST,
@@ -17,31 +14,18 @@ import {
 import auth from '../../services/auth';
 
 
-export function* authorize({
-	username,
-	password,
-	isRegistering
-}) {
-	// We send an action that tells Redux we're sending a request
+export function* authorize({ email, password, isRegistering }) {
+
 	yield put({
 		type: SENDING_REQUEST,
 		sending: true
 	});
 
-	// We then try to register or log in the user, depending on the request
 	try {
-		// let salt = genSalt(username)
-		// let hash = hashSync(password, salt)
-		// let response
-
-		// For either log in or registering, we call the proper function in the `auth`
-		// module, which is asynchronous. Because we're using generators, we can work
-		// as if it's synchronous because we pause execution until the call is done
-		// with `yield`!
 		if (isRegistering) {
-			response = yield call(auth.register, username, password);
+			response = yield call(auth.register, email, password);
 		} else {
-			response = yield call(auth.login, username, password);
+			response = yield call(auth.login, email, password);
 		}
 		console.log('response:');
 		console.log('response: ', response);
@@ -72,7 +56,7 @@ export function* loginFlow() {
 		// And we're listening for `LOGIN_REQUEST` actions and destructuring its payload
 		let request = yield take(LOGIN_REQUEST)
 		let {
-			username,
+			email,
 			password
 		} = request.data
 
@@ -81,7 +65,7 @@ export function* loginFlow() {
 		// returns the "winner", i.e. the one that finished first
 		let winner = yield race({
 			auth: call(authorize, {
-				username,
+				email,
 				password,
 				isRegistering: false
 			}),
@@ -95,44 +79,11 @@ export function* loginFlow() {
 				type: SET_AUTH,
 				newAuthState: true
 			}) // User is logged in (authorized)
-			// yield put({type: CHANGE_FORM, newFormState: {username: '', password: ''}}) // Clear form
+			// yield put({type: CHANGE_FORM, newFormState: {email: '', password: ''}}) // Clear form
 			forwardTo('/') // Go to dashboard page
 		}
 	}
 }
-
-/**
- * Github repos request/response handler
- */
-export function* getRepos() {
-	// Select username from store
-	const username = yield select(makeSelectEmail());
-	const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
-
-	try {
-		// Call our request helper (see 'utils/request')
-		// const repos = yield call(request, requestURL);
-		console.log('get repos called: ' + username);
-		yield put(reposLoaded(username));
-	} catch (err) {
-		yield put(repoLoadingError(err));
-	}
-}
-
-/**
- * Root saga manages watcher lifecycle
- */
-export function* githubData() {
-	// Watches for LOAD_REPOS actions and calls getRepos when one comes in.
-	// By using `takeLatest` only the result of the latest API call is applied.
-	// It returns task descriptor (just like fork) so we can continue execution
-	const watcher = yield takeLatest(CHANGE_FORM, getRepos);
-
-	// Suspend execution until location changes
-	yield take(LOCATION_CHANGE);
-	yield cancel(watcher);
-}
-
 
 function forwardTo(location) {
 	browserHistory.push(location);

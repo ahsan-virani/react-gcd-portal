@@ -4,17 +4,18 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoginImg from './login.jpg';
 import Img from './Img';
-import { FormControl, FormGroup, ControlLabel, HelpBlock, Checkbox, Radio, Button, Grid, Row, Col} from 'react-bootstrap';
+import { FormControl, FormGroup, ControlLabel, HelpBlock, Checkbox, Radio, Button, Grid, Row, Col } from 'react-bootstrap';
 import { Link, browserHistory } from 'react-router';
 import { changeForm } from './actions';
+import { loginRequest } from 'containers/App/actions';
 import { makeSelectEmail, makeSelectPassword } from './selectors';
 import { fromJS } from 'immutable';
 
 
 class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  render() {
-    return (
-      <div >
+	render() {
+		return (
+			<div >
         <Helmet
           title="Login"
           meta={[
@@ -60,47 +61,47 @@ class LoginPage extends React.PureComponent { // eslint-disable-line react/prefe
             </Row>
 
     </div>
-    );
-  }
-  _changeEmail(evt) {
-    var newState = fromJS({
-      email: evt.target.value,
-      password: this.props.password
-    });
-    this._emitChange(newState);
-  }
+		);
+	}
+	_changeEmail(evt) {
+		var newState = fromJS({
+			email: evt.target.value,
+			password: this.props.password
+		});
+		this._emitChange(newState);
+	}
 
-  _changePassword(evt) {
-    var newState = fromJS({
-      email: this.props.email,
-      password: evt.target.value
-    });
-    this._emitChange(newState);
-  }
+	_changePassword(evt) {
+		var newState = fromJS({
+			email: this.props.email,
+			password: evt.target.value
+		});
+		this._emitChange(newState);
+	}
 
-  _emitChange(newState) {
-    this.props.onChangeForm(newState.get('email'),newState.get('password'));
-  }
+	_emitChange(newState) {
+		this.props.onChangeForm(newState.get('email'), newState.get('password'));
+	}
 
-  _onSubmit(evt) {
-    evt.preventDefault();
-    console.log(this.props.email);
-    this.props.onLogin(this.props.email, this.props.password);
-  }
+	_onSubmit(evt) {
+		evt.preventDefault();
+		console.log(this.props.email);
+		this.props.onLogin(this.props.email, this.props.password);
+	}
 }
 
 const mapStateToProps = createStructuredSelector({
-   email: makeSelectEmail(),
-   password: makeSelectPassword(),
+	email: makeSelectEmail(),
+	password: makeSelectPassword(),
 });
 
 export function mapDispatchToProps(dispatch) {
-  return {
-    onChangeForm: (email,password) => dispatch(changeForm(email,password)),
-    onLogin: (email, password) => {
-      console.log('login agya',email, password);
-    },
-  };
+	return {
+		onChangeForm: (email, password) => dispatch(changeForm(email, password)),
+		onLogin: (email, password) => {
+			console.log('login agya', email, password);
+		},
+	};
 }
 
 

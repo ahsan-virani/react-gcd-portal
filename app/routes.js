@@ -21,7 +21,7 @@ export default function createRoutes(store) {
 		.catch(errorLoading);
 
 	return [{
-			onEnter: () => { console.log("entered new component"); },
+			onEnter: () => { console.log('entered new component'); },
 			childRoutes: [{
 					path: '/',
 					name: 'home',
@@ -29,7 +29,6 @@ export default function createRoutes(store) {
 						const importModules = Promise.all([
 							import ('containers/HomePage'),
 						]);
-
 						const renderRoute = loadModule(cb);
 
 						importModules.then(([component]) => {

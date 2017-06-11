@@ -1,8 +1,9 @@
-import { CHANGE_USERNAME } from './constants';
+import { CHANGE_FORM } from './constants';
 
-export function changeUsername(name) {
-  return {
-    type: CHANGE_USERNAME,
-    name,
-  };
+export function changeForm(email, password) {
+	return {
+		type: CHANGE_FORM,
+		email,
+		password
+	};
 }

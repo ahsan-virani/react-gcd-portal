@@ -17,10 +17,16 @@ const makeCoinType = () => createSelector(
 	(walletState) => walletState.get('coinType')
 );
 
+const makeCoinList = () => createSelector(
+	selectWallet,
+	(walletState) => walletState.get('coins')
+);
+
 
 export {
 	selectWallet,
 	makeShowModal,
 	makeCoinType,
-	makeModalType
+	makeModalType,
+	makeCoinList
 };

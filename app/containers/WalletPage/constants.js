@@ -14,3 +14,4 @@ export const WITHDRAW_COIN = 'gcd/Wallet/WITHDRAW_COIN';
 export const MODAL_ADD_COIN = 'gcd/Wallet/MODAL_ADD_COIN';
 export const MODAL_WITHDRAW_COIN = 'gcd/Wallet/MODAL_WITHDRAW_COIN';
 export const REQUEST_ADDRESS = 'gcd/Wallet/REQUEST_ADDRESS';
+export const COIN_LIST = 'gcd/Wallet/COIN_LIST';

@@ -3,19 +3,21 @@ import PlusImg from './plus.png';
 import MinusImg from './minus1.png';
 import { Modal } from 'react-bootstrap';
 
-function WalletRow (props) { return <tr>
+function WalletRow (props) {
+
+  return <tr>
                 <td>
-                    <a  onClick={()=>{props.onAddButtonClick(props.name)}}><span className="plus"><img src={PlusImg} alt="GlobalCoinDex" /></span></a>
-                    <a ><span className="minus1"><img src={MinusImg} alt="GlobalCoinDex" /></span></a>
+                    <a  onClick={()=>{props.onAddButtonClick(props.name)}}>  <span className="plus"><img src={PlusImg} alt="GlobalCoinDex" /></span></a>
+                    <a onClick={()=>{props.onMinusButtonClick(props.name)}}> <span className="minus1"><img src={MinusImg} alt="GlobalCoinDex" /></span></a>
                 </td>
-                <td>{props.name}</td>
-                <td>{props.sum}</td>
-                <td>{props.bal}</td>
-                <td>0.000007</td>
-                <td>0.000007</td>
-                <td>0.0000058</td>
-                <td>0.0000058</td>
-                <td>12.5%</td>
+                <td>{props.currencyName}</td>
+                <td>{props.symbol}</td>
+                <td>{props.availableBalance}</td>
+                <td>{props.pendingDeposit}</td>
+                <td>{props.reserved}</td>
+                <td>{props.total}</td>
+                <td>{props.estValue}</td>
+                <td>{props.change}</td>
             </tr>
 
           };

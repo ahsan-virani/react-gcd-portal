@@ -3,49 +3,92 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import BannerImg from './inner-banner.jpg';
-import { FormControl, Modal, Button,Table ,Grid, Row ,Col,Clearfix } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, Modal, Button,Table ,Grid, Row ,Col,Clearfix } from 'react-bootstrap';
 import './style.css';
 import WalletRecordRow from 'components/WalletRow';
-import { addCoin, withdrawCoin, requestAddress } from './actions';
-import { makeShowModal, makeModalType, makeCoinType} from './selectors';
+import { addCoin, withdrawCoin, requestAddress,coins } from './actions';
+import { makeShowModal, makeModalType, makeCoinType, makeCoinList} from './selectors';
 import { fromJS } from 'immutable';
+import {	MODAL_ADD_COIN,	MODAL_WITHDRAW_COIN, COIN_LIST } from './constants';
 
 
 
 class WalletPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
-     getRowForWalletRecord(name, sum, bal){
-     var rows = [];
-     for (var i =0; i<5; i++){
-       rows.push(<WalletRecordRow name={name+i} sum={sum} bal={bal} onAddButtonClick={this.onRowAddButtonClick.bind(this)} />)
-     }
-     return rows;
-   }
+    getRowForWalletRecord(coin){
+      return (<WalletRecordRow currencyName={coin.get('currencyName')} symbol={coin.get('symbol')} availableBalance={coin.get('availableBalance')}
+         pendingDeposit={coin.get('pendingDeposit')} reserved={coin.get('reserved')} total={coin.get('total')} estValue={coin.get('estValue')} change={coin.get('change')}
+          onAddButtonClick={this.onRowAddButtonClick.bind(this)} onMinusButtonClick={this.onRowMinusButtonClick.bind(this)} />);
+    }
 
    onRowAddButtonClick(name){
      console.log('coin Name ',name);
       this.props.onAddCoin(true,name);
    }
 
+   onRowMinusButtonClick(name){
+
+     console.log(this.props.modalType);
+      this.props.onWithdrawCoin(true,name);
+   }
+
   render() {
 
-    var rows = this.getRowForWalletRecord("abc", "abc", "anc");
+    var rows = this.props.coins.map((coin)=>{
+      return this.getRowForWalletRecord(coin);
+    });
 
-    var modalContentAdd = (<FormControl  type="text" value={this.props.coinType} readOnly />);
+
+    var modalContentAdd = (
+
+      <form className="form-horizontal" >
+        <FormGroup controlId="formHorizontalEmail">
+          <Col componentClass={ControlLabel} sm={2}>
+            Address
+          </Col>
+          <Col sm={8}>
+            <FormControl  type="text" value={this.props.coinType} readOnly/>
+          </Col>
+        </FormGroup>
+      </form>
+    );
+
+
+    var modalContentWithdraw = (
+      <form className="form-horizontal" >
+        <FormGroup controlId="formHorizontalEmail">
+          <Col componentClass={ControlLabel} sm={2}>
+            Bitcoin Amount
+          </Col>
+          <Col sm={8}>
+            <FormControl  type="text" value={this.props.email} />
+          </Col>
+        </FormGroup>
+        <FormGroup controlId="formHorizontalEmail">
+          <Col componentClass={ControlLabel} sm={2}>
+            Address
+          </Col>
+          <Col sm={8}>
+            <FormControl  type="text" value={this.props.email} />
+          </Col>
+        </FormGroup>
+      </form>
+);
 
     return (
 
       <div >
         <Modal show={this.props.showModal} onHide={()=>this.props.onAddCoin(false)} backdrop="static">
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>{ this.props.modalType == MODAL_ADD_COIN ?  'Generate Address' : 'Transfer' }</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                { modalContentAdd }
+
+              { this.props.modalType == MODAL_ADD_COIN ?  modalContentAdd : modalContentWithdraw }
 
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={()=>this.props.requestAddress(coinType)}>Generate Address</Button>
+              <Button onClick={()=>this.props.requestAddress(coinType)}>{ this.props.modalType == MODAL_ADD_COIN ?  'Generate Address' : 'Transfer' }</Button>
             </Modal.Footer>
           </Modal>
 
@@ -168,11 +211,13 @@ const mapStateToProps = createStructuredSelector({
 	showModal: makeShowModal(),
 	modalType: makeModalType(),
   coinType: makeCoinType(),
+  coins: makeCoinList(),
 });
 
 export function mapDispatchToProps(dispatch) {
 	return {
 		onAddCoin: (show,name) => dispatch(addCoin(show,name)),
+    onWithdrawCoin: (show,name) => dispatch(withdrawCoin(show,name)),
     onRequestAddress: (coinType) => dispatch(requestAddress(coinType)),
 	};
 }

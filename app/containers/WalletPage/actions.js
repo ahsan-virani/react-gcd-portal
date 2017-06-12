@@ -1,6 +1,7 @@
 import {
 	ADD_COIN,
-	WITHDRAW_COIN
+	WITHDRAW_COIN,
+	COIN_LIST,
 } from './constants';
 
 export function addCoin(show, coinType) {
@@ -16,6 +17,12 @@ export function withdrawCoin(show, coinType) {
 		type: WITHDRAW_COIN,
 		show,
 		coinType,
+	};
+}
+
+export function getCoins() {
+	return {
+		type: COIN_LIST,
 	};
 }
 

@@ -2,6 +2,8 @@ import {
 	ADD_COIN,
 	WITHDRAW_COIN,
 	COIN_LIST,
+	REQUEST_ADDRESS,
+	ADDRESS_RECIEVED,
 } from './constants';
 
 export function addCoin(show, coinType) {
@@ -29,6 +31,14 @@ export function getCoins() {
 export function requestAddress(coinType) {
 	return {
 		type: REQUEST_ADDRESS,
+		coinType,
+	};
+}
+
+export function addressRecieved(address, coinType) {
+	return {
+		type: ADDRESS_RECIEVED,
+		address,
 		coinType,
 	};
 }

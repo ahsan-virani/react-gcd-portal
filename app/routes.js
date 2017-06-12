@@ -111,11 +111,13 @@ export default function createRoutes(store) {
 					getComponent(nextState, cb) {
 						const importModules = Promise.all([
 							import ('containers/WalletPage/reducers'),
+							import ('containers/WalletPage/sagas'),
 							import ('containers/WalletPage')
 						]);
 						const renderRoute = loadModule(cb);
-						importModules.then(([reducer, component]) => {
-							injectReducer('wallet', reducer.default)
+						importModules.then(([reducer, sagas, component]) => {
+							injectReducer('wallet', reducer.default);
+							injectSagas(sagas.default);
 							renderRoute(component);
 						});
 

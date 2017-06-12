@@ -43,7 +43,8 @@ const auth = {
 				// Save token to local storage
 				localStorage.token = response.token;
 				return Promise.resolve(true);
-			});
+			})
+			.catch(e => { console.log('error aa gaya bai'); return Promise.reject(e) });
 	},
 	/**
 	 * Logs the current user out
@@ -80,7 +81,24 @@ const auth = {
 		return request('http://10.1.18.151:4040/api/users', options)
 			.then(() => auth.login(username, password));
 	},
-	onChange() {}
+
+	onChange() {},
+
+	requestAddress(coinType) {
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'JWT ' + localStorage.token,
+			},
+			body: JSON.stringify({
+				coinType,
+			}),
+		};
+		return request('http://10.1.18.151:4040/api/wallet/generateAddress', options)
+			.then((response) => { return Promise.resolve(response) })
+			.catch(e => { return Promise.reject(e) });
+	}
 };
 
 export default auth;

@@ -111,14 +111,20 @@ export function* loginFlow() {
 			email,
 			password
 		} = request.data;
-		let response = yield call(auth.login, email, password);
-		console.log('authSaga response', response) // This returns undefined!
-		if (response.error) {
-			return yield put({ type: REQUEST_ERROR, response });
+		try {
+			let response = yield call(auth.login, email, password);
+			console.log('authSaga response', response) // This returns undefined!
+			yield put({ type: SET_AUTH, newAuthState: true });
+			forwardTo('/wallet');
+		} catch (e) {
+			console.log('login error: ', e);
+			return yield put({ type: REQUEST_ERROR, response: e.response });
 		}
+		// if (response.error) {
+		// 	return yield put({ type: REQUEST_ERROR, response });
+		// }
 
-		yield put({ type: SET_AUTH, newAuthState: true });
-		forwardTo('/wallet');
+
 		// yield put({ type: authTypes.SIGNUP_SUCCESS, response })
 	}
 }

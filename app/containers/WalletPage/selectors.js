@@ -22,11 +22,17 @@ const makeCoinList = () => createSelector(
 	(walletState) => walletState.get('coins')
 );
 
+const makeAddress = () => createSelector(
+	selectWallet,
+	(walletState) => walletState.get('address')
+);
+
 
 export {
 	selectWallet,
 	makeShowModal,
 	makeCoinType,
 	makeModalType,
-	makeCoinList
+	makeCoinList,
+	makeAddress,
 };

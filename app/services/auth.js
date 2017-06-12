@@ -49,7 +49,8 @@ const auth = {
 	 * Logs the current user out
 	 */
 	logout() {
-		return request.post('/logout');
+		localStorage.token = '';
+		return Promise.resolve(true);
 	},
 	/**
 	 * Checks if a user is logged in
@@ -63,12 +64,20 @@ const auth = {
 	 * @param  {string} password The password of the user
 	 */
 	register(username, password) {
-		// Post a fake request
-		return request.post('/register', {
+
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
 				username,
 				password
-			})
-			// Log user in after registering
+			}),
+		};
+
+		// Post a fake request
+		return request('http://10.1.18.151:4040/api/users', options)
 			.then(() => auth.login(username, password));
 	},
 	onChange() {}

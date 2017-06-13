@@ -55,7 +55,7 @@ export default function createRoutes(store) {
 	// Create reusable async injectors using getAsyncInjectors factory
 	const { injectReducer, injectSagas, injectSaga } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
 
-	import ('containers/App/Sagas')
+	import ('containers/App/sagas')
 	.then((saga) => {
 			console.log('imported saga: ', saga);
 			injectSaga(saga.default)

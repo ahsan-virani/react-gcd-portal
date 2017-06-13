@@ -37,7 +37,6 @@ const initialState = fromJS({
 		}
 	],
 
-
 });
 
 function walletReducer(state = initialState, action) {

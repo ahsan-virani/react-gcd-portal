@@ -94,7 +94,6 @@ const auth = {
 			body: JSON.stringify({
 				coinType,
 			}),
-			sudo service mongod restart
 		};
 		console.log('requestAddress request sent');
 		return request('http://localhost:4040/api/wallet/generateAddress', options)

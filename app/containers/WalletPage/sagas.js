@@ -3,6 +3,8 @@ import { browserHistory } from 'react-router';
 import {
 	REQUEST_ADDRESS,
 	ADDRESS_RECIEVED,
+	COIN_LIST,
+	COIN_LIST_RECIEVED,
 } from './constants';
 
 import { REQUEST_ERROR } from 'containers/App/constants';
@@ -36,17 +38,18 @@ function* requestAddress(coinType) {
 
 function* getCoins() {
 
-	return console.log('coin agaye');
+	console.log('coin agaye');
+	// return;
 
 	try {
-		const addressResponse = yield call(auth.requestAddress, coinType);
-		if (addressResponse) {
-			yield put({ type: ADDRESS_RECIEVED, address: addressResponse.address, coinType: addressResponse.coinType });
+		const coinListResponse = yield call(auth.requestCoins);
+		if (coinListResponse) {
+			yield put({ type: COIN_LIST_RECIEVED, coins: coinListResponse.coins });
 		} else {
-			yield put({ type: ADDRESS_RECIEVED, address: '', coinType: '' });
+			yield put({ type: COIN_LIST_RECIEVED, coins: [] });
 		}
 	} catch (e) {
-		console.log('address generation error: ', e);
+		console.log('coin list error: ', e);
 		return yield put({ type: REQUEST_ERROR, response: e.response });
 	}
 	// if (addressResponse.error) {
@@ -68,7 +71,14 @@ function* watchRequestAddress() {
 	}
 }
 
-export default [watchRequestAddress];
+function* watchRequestCoins() {
+	while (true) {
+		yield take(COIN_LIST);
+		yield fork(getCoins);
+	}
+}
+
+export default [watchRequestAddress, watchRequestCoins];
 
 function forwardTo(location) {
 	browserHistory.push(location);

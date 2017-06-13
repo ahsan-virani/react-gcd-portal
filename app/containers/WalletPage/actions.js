@@ -2,6 +2,7 @@ import {
 	ADD_COIN,
 	WITHDRAW_COIN,
 	COIN_LIST,
+	COIN_LIST_RECIEVED,
 	REQUEST_ADDRESS,
 	ADDRESS_RECIEVED,
 } from './constants';
@@ -22,9 +23,16 @@ export function withdrawCoin(show, coinType) {
 	};
 }
 
-export function getCoins(coins) {
+export function getCoins() {
 	return {
 		type: COIN_LIST,
+	};
+}
+
+export function getCoinsRecieved(coins) {
+	console.log('getCoinsRecieved');
+	return {
+		type: COIN_LIST_RECIEVED,
 		coins
 	};
 }

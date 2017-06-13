@@ -98,7 +98,22 @@ const auth = {
 		return request('http://10.1.18.151:4040/api/wallet/generateAddress', options)
 			.then((response) => { return Promise.resolve(response) })
 			.catch(e => { return Promise.reject(e) });
-	}
+	},
+
+	requestCoins() {
+		const options = {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'JWT ' + localStorage.token,
+			},
+		};
+		console.log('requestCoins service called');
+		return request('http://10.1.18.151:4040/api/wallet', options)
+			.then((response) => { return Promise.resolve(response) })
+			.catch(e => { return Promise.reject(e) });
+	},
+
 };
 
 export default auth;

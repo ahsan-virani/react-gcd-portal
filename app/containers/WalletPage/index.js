@@ -24,13 +24,18 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 	onRowAddButtonClick(name) {
 		console.log('coin Name ', name);
 		this.props.onAddCoin(true, name);
-    this.props.getCoinsList(name);
+		// this.props.getCoinsList(name);
 	}
 
 	onRowMinusButtonClick(name) {
 
 		console.log(this.props.modalType);
 		this.props.onWithdrawCoin(true, name);
+	}
+
+	componentDidMount() {
+		console.log('WALLET componentDidMount');
+		this.props.getCoinsList();
 	}
 
 	render() {
@@ -219,7 +224,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
 	return {
 		onAddCoin: (show, name) => dispatch(addCoin(show, name)),
-    getCoinsList: (coins) => dispatch(getCoins(coins)),
+		getCoinsList: () => dispatch(getCoins()),
 		onWithdrawCoin: (show, name) => dispatch(withdrawCoin(show, name)),
 		onRequestAddress: (coinType) => dispatch(requestAddress(coinType)),
 	};

@@ -1,5 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import AppHeader from 'components/AppHeader';
+import AppFooter from 'components/AppFooter';
+import withProgressBar from 'components/ProgressBar';
 
 export default class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -17,7 +20,10 @@ export default class App extends React.PureComponent { // eslint-disable-line re
             { name: 'description', content: 'A React.js Boilerplate application' },
           ]}
         />
-        {React.Children.toArray(this.props.children)}
+
+				<AppHeader />
+				       {React.Children.toArray(this.props.children)}
+				<AppFooter />
 
 
       </div>

@@ -38,7 +38,7 @@ const auth = {
 				password
 			}),
 		};
-		return request('http://localhost:4040/api/auth/login', options)
+		return request('http://34.211.244.119:8332/api/auth/login', options)
 			.then(response => {
 				// Save token to local storage
 				localStorage.token = response.token;
@@ -78,7 +78,7 @@ const auth = {
 		};
 
 		// Post a fake request
-		return request('http://localhost:4040/api/users', options)
+		return request('http://34.211.244.119:8332/api/users', options)
 			.then(() => auth.login(username, password));
 	},
 
@@ -96,7 +96,7 @@ const auth = {
 			}),
 		};
 		console.log('requestAddress request sent');
-		return request('http://localhost:4040/api/wallet/generateAddress', options)
+		return request('http://34.211.244.119:8332/api/wallet/generateAddress', options)
 			.then((response) => { return Promise.resolve(response) })
 			.catch(e => { return Promise.reject(e) });
 	},
@@ -110,7 +110,7 @@ const auth = {
 			},
 		};
 		console.log('requestCoins service called');
-		return request('http://localhost:4040/api/wallet', options)
+		return request('http://34.211.244.119:8332/api/wallet', options)
 			.then((response) => { return Promise.resolve(response) })
 			.catch(e => { return Promise.reject(e) });
 	},

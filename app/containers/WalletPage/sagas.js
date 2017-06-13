@@ -33,6 +33,34 @@ function* requestAddress(coinType) {
 	// 	)
 }
 
+
+function* getCoins() {
+
+	return console.log('coin agaye');
+
+	try {
+		const addressResponse = yield call(auth.requestAddress, coinType);
+		if (addressResponse) {
+			yield put({ type: ADDRESS_RECIEVED, address: addressResponse.address, coinType: addressResponse.coinType });
+		} else {
+			yield put({ type: ADDRESS_RECIEVED, address: '', coinType: '' });
+		}
+	} catch (e) {
+		console.log('address generation error: ', e);
+		return yield put({ type: REQUEST_ERROR, response: e.response });
+	}
+	// if (addressResponse.error) {
+	//
+	// }
+
+	// if (!starredByUser || !starredByUser.pageCount || loadMore)
+	// 	yield call(
+	// 		fetchStarred,
+	// 		login,
+	// 		starredByUser.nextPageUrl || firstPageStarredUrl(login)
+	// 	)
+}
+
 function* watchRequestAddress() {
 	while (true) {
 		const { coinType } = yield take(REQUEST_ADDRESS);

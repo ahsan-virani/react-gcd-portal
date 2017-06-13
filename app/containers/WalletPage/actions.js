@@ -6,7 +6,7 @@ import {
 	ADDRESS_RECIEVED,
 } from './constants';
 
-export function addCoin(show, coinType) {
+export function addCoin(show, coinType, address) {
 	return {
 		type: ADD_COIN,
 		show,
@@ -22,9 +22,10 @@ export function withdrawCoin(show, coinType) {
 	};
 }
 
-export function getCoins() {
+export function getCoins(coins) {
 	return {
 		type: COIN_LIST,
+		coins
 	};
 }
 

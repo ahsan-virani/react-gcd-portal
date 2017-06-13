@@ -7,8 +7,8 @@ function WalletRow (props) {
 
   return <tr>
                 <td>
-                    <a  onClick={()=>{props.onAddButtonClick(props.name)}}>  <span className="plus"><img src={PlusImg} alt="GlobalCoinDex" /></span></a>
-                    <a onClick={()=>{props.onMinusButtonClick(props.name)}}> <span className="minus1"><img src={MinusImg} alt="GlobalCoinDex" /></span></a>
+                    <a  onClick={()=>{props.onAddButtonClick(props.symbol)}}>  <span className="plus"><img src={PlusImg} alt="GlobalCoinDex" /></span></a>
+                    <a onClick={()=>{props.onMinusButtonClick(props.symbol)}}> <span className="minus1"><img src={MinusImg} alt="GlobalCoinDex" /></span></a>
                 </td>
                 <td>{props.currencyName}</td>
                 <td>{props.symbol}</td>

@@ -41,22 +41,23 @@ const initialState = fromJS({
 
 function walletReducer(state = initialState, action) {
 	switch (action.type) {
-	case ADD_COIN:
-		return state
-			.set('showModal', action.show)
-			.set('modalType', MODAL_ADD_COIN)
-			.set('coinType', action.coinType);
-	case WITHDRAW_COIN:
-		return state
-			.set('showModal', action.show)
-			.set('modalType', MODAL_WITHDRAW_COIN)
-			.set('coinType', action.coinType);
-	case COIN_LIST:
-		return state;
-	case ADDRESS_RECIEVED:
-		return state.set('address', action.address);
-	default:
-		return state;
+		case ADD_COIN:
+			return state
+				.set('showModal', action.show)
+				.set('modalType', MODAL_ADD_COIN)
+				.set('coinType', action.coinType);
+		case WITHDRAW_COIN:
+			return state
+				.set('showModal', action.show)
+				.set('modalType', MODAL_WITHDRAW_COIN)
+				.set('coinType', action.coinType);
+		case COIN_LIST:
+			return state;
+			//	return state.set('coins', action.coins);
+		case ADDRESS_RECIEVED:
+			return state.set('address', action.address);
+		default:
+			return state;
 	}
 }
 

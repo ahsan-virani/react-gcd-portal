@@ -95,6 +95,7 @@ const auth = {
 				coinType,
 			}),
 		};
+		console.log('requestAddress request sent');
 		return request('http://10.1.18.151:4040/api/wallet/generateAddress', options)
 			.then((response) => { return Promise.resolve(response) })
 			.catch(e => { return Promise.reject(e) });

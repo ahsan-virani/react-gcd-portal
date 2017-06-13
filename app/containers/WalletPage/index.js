@@ -6,7 +6,7 @@ import BannerImg from './inner-banner.jpg';
 import { FormGroup, ControlLabel, FormControl, Modal, Button, Table, Grid, Row, Col, Clearfix } from 'react-bootstrap';
 import './style.css';
 import WalletRecordRow from 'components/WalletRow';
-import { addCoin, withdrawCoin, requestAddress, coins } from './actions';
+import { addCoin, withdrawCoin, requestAddress, getCoins } from './actions';
 import { makeShowModal, makeModalType, makeCoinType, makeCoinList, makeAddress } from './selectors';
 import { fromJS } from 'immutable';
 import { MODAL_ADD_COIN, MODAL_WITHDRAW_COIN, COIN_LIST } from './constants';
@@ -24,6 +24,7 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 	onRowAddButtonClick(name) {
 		console.log('coin Name ', name);
 		this.props.onAddCoin(true, name);
+    this.props.getCoinsList(name);
 	}
 
 	onRowMinusButtonClick(name) {
@@ -218,6 +219,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
 	return {
 		onAddCoin: (show, name) => dispatch(addCoin(show, name)),
+    getCoinsList: (coins) => dispatch(getCoins(coins)),
 		onWithdrawCoin: (show, name) => dispatch(withdrawCoin(show, name)),
 		onRequestAddress: (coinType) => dispatch(requestAddress(coinType)),
 	};

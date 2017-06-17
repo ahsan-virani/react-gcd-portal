@@ -115,7 +115,11 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 
         <Grid>
           <Row className="show-grid balances">
-            <h1>ACCOUNT BALANCES (ESTIMATED VALUE: 0.00000000 BTC) </h1>
+            <h1>ACCOUNT BALANCES (ESTIMATED VALUE: 0.00000000 BTC)
+							<Button bsStyle="primary" onClick={this.componentDidMount.bind(this)}>Refresh</Button>
+						</h1>
+
+
 
               <Table responsive>
                 <thead>

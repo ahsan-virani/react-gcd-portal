@@ -13,8 +13,11 @@ import request from '../utils/request';
 // }
 let localStorage = global.window.localStorage;
 
-let localServer = 'http://10.1.18.151:4040/';
-let LiveServer = 'http://34.211.244.119:8332/';
+const PROD_URL = 'http://34.211.244.119:8332/';
+const LOCAL_URL = 'http://10.1.18.151:4040/';
+
+const SERVER_URL = process.env.NODE_ENV === 'production' ? PROD_URL : LOCAL_URL;
+
 
 const auth = {
 	/**
@@ -41,7 +44,7 @@ const auth = {
 				password
 			}),
 		};
-		return request(localServer + 'api/auth/login', options)
+		return request(SERVER_URL + 'api/auth/login', options)
 			.then(response => {
 				// Save token to local storage
 				localStorage.token = response.token;
@@ -81,7 +84,7 @@ const auth = {
 		};
 
 		// Post a fake request
-		return request(localServer + 'api/users', options)
+		return request(SERVER_URL + 'api/users', options)
 			.then(() => auth.login(username, password));
 	},
 
@@ -99,7 +102,7 @@ const auth = {
 				altClient: false,
 			}),
 		};
-		return request(localServer + 'api/wallet/generateAddress', options)
+		return request(SERVER_URL + 'api/wallet/generateAddress', options)
 			.then((response) => { return Promise.resolve(response) })
 			.catch(e => { return Promise.reject(e) });
 	},
@@ -112,7 +115,7 @@ const auth = {
 				'Authorization': 'JWT ' + localStorage.token,
 			},
 		};
-		return request(localServer + 'api/wallet', options)
+		return request(SERVER_URL + 'api/wallet', options)
 			.then((response) => { return Promise.resolve(response) })
 			.catch(e => { return Promise.reject(e) });
 	},
@@ -133,7 +136,7 @@ const auth = {
 			}),
 		};
 		console.log('sendcoins request sent');
-		return request(localServer + 'api/wallet/withdraw', options)
+		return request(SERVER_URL + 'api/wallet/withdraw', options)
 			.then((response) => { return Promise.resolve(response) })
 			.catch(e => { return Promise.reject(e) });
 	},

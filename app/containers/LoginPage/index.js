@@ -9,14 +9,18 @@ import { Link, browserHistory } from 'react-router';
 import { changeForm } from './actions';
 import { loginRequest } from 'containers/App/actions';
 import { makeSelectEmail, makeSelectPassword } from './selectors';
+import { makeSelectLoggedIn } from 'containers/App/selectors';
 import { fromJS } from 'immutable';
 
 
 class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
-	// componentWillMount(){
-	// 	this.props.loggedIn
-	// }
+	componentWillMount(){
+		console.log('componentWillMount');
+		if (this.props.loggedIn) {
+      browserHistory.replace("/wallet")
+		}
+	}
 	render() {
 		return (
 			<div >
@@ -97,6 +101,7 @@ class LoginPage extends React.PureComponent { // eslint-disable-line react/prefe
 const mapStateToProps = createStructuredSelector({
 	email: makeSelectEmail(),
 	password: makeSelectPassword(),
+	loggedIn: makeSelectLoggedIn(),
 });
 
 export function mapDispatchToProps(dispatch) {

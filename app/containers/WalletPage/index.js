@@ -7,7 +7,7 @@ import { Alert, FormGroup, ControlLabel, FormControl, Modal, Button, Table, Grid
 import './style.css';
 import WalletRecordRow from 'components/WalletRow';
 import { addCoin, withdrawCoin, requestAddress, getCoins, changeForm, sendCoins, sendCoinsResponse, sendCoinsResponseSuccess } from './actions';
-import { makeShowModal, makeModalType, makeCoinType, makeCoinList, makeAddress, makeAmount, makeSendingAddress, makeSendCoinResponse } from './selectors';
+import { makeShowModal, makeModalType, makeCoinType, makeCoinList, makeAddress, makeAmount, makeSendingAddress, makeSendCoinResponse, makeSendCoinInProgress } from './selectors';
 import { fromJS } from 'immutable';
 import { MODAL_ADD_COIN, MODAL_WITHDRAW_COIN, COIN_LIST } from './constants';
 
@@ -107,7 +107,7 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 								 		Generate Address
 								 </Button>
 								 :
-								 <Button onClick={()=>this.props.onSendCoin(this.props.amount,this.props.sendingAddress)}>
+								 <Button disabled={this.props.sendCoinInProgress} onClick={()=>this.props.onSendCoin(this.props.amount,this.props.sendingAddress)}>
 								 Transfer
 							 </Button>
 									 }
@@ -269,7 +269,8 @@ const mapStateToProps = createStructuredSelector({
 	address: makeAddress(),
 	amount: makeAmount(),
 	sendingAddress: makeSendingAddress(),
-	resultResponse: makeSendCoinResponse()
+	resultResponse: makeSendCoinResponse(),
+	sendCoinInProgress: makeSendCoinInProgress(),
 });
 
 export function mapDispatchToProps(dispatch) {

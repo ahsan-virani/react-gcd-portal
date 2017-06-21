@@ -6,6 +6,7 @@ import {
 	MODAL_ADD_COIN,
 	MODAL_WITHDRAW_COIN,
 	COIN_LIST,
+	SEND_COIN,
 	COIN_LIST_RECIEVED,
 	ADDRESS_RECIEVED,
 	CHANGE_FORM,
@@ -24,6 +25,7 @@ const initialState = fromJS({
 	sendingAddress: '',
 	resultResponse: false,
 	resultResponseStatus: false,
+	sendCoinInProgress: false,
 });
 
 // {
@@ -72,13 +74,17 @@ function walletReducer(state = initialState, action) {
 		case CHANGE_FORM:
 			return state.set('amount', action.amount)
 				.set('sendingAddress', action.sendingAddress);
+		case SEND_COIN:
+			return state
+				.set('sendCoinInProgress', true);
 		case SEND_COIN_RESPONSE:
 			return state
 				.set('showModal', false)
 				.set('amount', 0)
 				.set('sendingAddress', '')
 				.set('resultResponse', true)
-				.set('resultResponseStatus', action.result);
+				.set('resultResponseStatus', action.result)
+				.set('sendCoinInProgress', false);
 		case SEND_COIN_RESPONSE_SUCCESS:
 			return state
 				.set('resultResponse', false);

@@ -47,6 +47,11 @@ const makeSendCoinResponse = () => createSelector(
 	}
 );
 
+const makeSendCoinInProgress = () => createSelector(
+	selectWallet,
+	(walletState) => walletState.get('sendCoinInProgress')
+);
+
 
 
 export {
@@ -59,5 +64,6 @@ export {
 	makeAmount,
 	makeSendingAddress,
 	makeSendCoinResponse,
+	makeSendCoinInProgress,
 
 };

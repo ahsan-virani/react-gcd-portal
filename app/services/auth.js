@@ -13,6 +13,9 @@ import request from '../utils/request';
 // }
 let localStorage = global.window.localStorage;
 
+let localServer = 'http://10.1.18.151:4040/';
+let LiveServer = 'http://34.211.244.119:8332/';
+
 const auth = {
 	/**
 	 * Logs a user in, returning a promise with `true` when done
@@ -38,7 +41,7 @@ const auth = {
 				password
 			}),
 		};
-		return request('http://34.211.244.119:8332/api/auth/login', options)
+		return request(localServer + 'api/auth/login', options)
 			.then(response => {
 				// Save token to local storage
 				localStorage.token = response.token;
@@ -78,7 +81,7 @@ const auth = {
 		};
 
 		// Post a fake request
-		return request('http://34.211.244.119:8332/api/users', options)
+		return request(localServer + 'api/users', options)
 			.then(() => auth.login(username, password));
 	},
 
@@ -93,10 +96,10 @@ const auth = {
 			},
 			body: JSON.stringify({
 				coinType,
+				altClient: false,
 			}),
 		};
-		console.log('requestAddress request sent');
-		return request('http://34.211.244.119:8332/api/wallet/generateAddress', options)
+		return request(localServer + 'api/wallet/generateAddress', options)
 			.then((response) => { return Promise.resolve(response) })
 			.catch(e => { return Promise.reject(e) });
 	},
@@ -109,8 +112,28 @@ const auth = {
 				'Authorization': 'JWT ' + localStorage.token,
 			},
 		};
-		console.log('requestCoins service called');
-		return request('http://34.211.244.119:8332/api/wallet', options)
+		return request(localServer + 'api/wallet', options)
+			.then((response) => { return Promise.resolve(response) })
+			.catch(e => { return Promise.reject(e) });
+	},
+
+	sendCoins(amount, sendingAddress, comment = 'comment', toComment = 'to comment', altClient = false) {
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'JWT ' + localStorage.token,
+			},
+			body: JSON.stringify({
+				amount,
+				sendingAddress,
+				comment,
+				toComment,
+				altClient
+			}),
+		};
+		console.log('sendcoins request sent');
+		return request(localServer + 'api/wallet/withdraw', options)
 			.then((response) => { return Promise.resolve(response) })
 			.catch(e => { return Promise.reject(e) });
 	},

@@ -13,6 +13,10 @@ import { fromJS } from 'immutable';
 
 
 class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+
+	// componentWillMount(){
+	// 	this.props.loggedIn
+	// }
 	render() {
 		return (
 			<div >

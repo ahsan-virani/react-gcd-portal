@@ -8,6 +8,9 @@ import {
 	COIN_LIST,
 	COIN_LIST_RECIEVED,
 	ADDRESS_RECIEVED,
+	CHANGE_FORM,
+	SEND_COIN_RESPONSE,
+	SEND_COIN_RESPONSE_SUCCESS
 } from './constants';
 
 // The initial state of the App
@@ -17,6 +20,10 @@ const initialState = fromJS({
 	coinType: '',
 	address: '',
 	coins: [],
+	amount: '',
+	sendingAddress: '',
+	resultResponse: false,
+	resultResponseStatus: false,
 });
 
 // {
@@ -48,7 +55,10 @@ function walletReducer(state = initialState, action) {
 				.set('showModal', action.show)
 				.set('modalType', MODAL_ADD_COIN)
 				.set('coinType', action.coinType)
-				.set('address', '');
+				.set('address', '')
+				.set('amount', 0)
+				.set('sendingAddress', '');
+			s
 		case WITHDRAW_COIN:
 			return state
 				.set('showModal', action.show)
@@ -59,6 +69,21 @@ function walletReducer(state = initialState, action) {
 			//	return state.set('coins', action.coins);
 		case ADDRESS_RECIEVED:
 			return state.set('address', action.address);
+		case CHANGE_FORM:
+			return state.set('amount', action.amount)
+				.set('sendingAddress', action.sendingAddress);
+		case SEND_COIN_RESPONSE:
+			return state
+				.set('showModal', false)
+				.set('amount', 0)
+				.set('sendingAddress', '')
+				.set('resultResponse', true)
+				.set('resultResponseStatus', action.result);
+		case SEND_COIN_RESPONSE_SUCCESS:
+			return state
+				.set('resultResponse', false);
+
+
 		default:
 			return state;
 	}

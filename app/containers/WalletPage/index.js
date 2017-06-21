@@ -3,11 +3,11 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import BannerImg from './inner-banner.jpg';
-import { FormGroup, ControlLabel, FormControl, Modal, Button, Table, Grid, Row, Col, Clearfix } from 'react-bootstrap';
+import { Alert, FormGroup, ControlLabel, FormControl, Modal, Button, Table, Grid, Row, Col, Clearfix } from 'react-bootstrap';
 import './style.css';
 import WalletRecordRow from 'components/WalletRow';
-import { addCoin, withdrawCoin, requestAddress, getCoins } from './actions';
-import { makeShowModal, makeModalType, makeCoinType, makeCoinList, makeAddress } from './selectors';
+import { addCoin, withdrawCoin, requestAddress, getCoins, changeForm, sendCoins, sendCoinsResponse, sendCoinsResponseSuccess } from './actions';
+import { makeShowModal, makeModalType, makeCoinType, makeCoinList, makeAddress, makeAmount, makeSendingAddress, makeSendCoinResponse } from './selectors';
 import { fromJS } from 'immutable';
 import { MODAL_ADD_COIN, MODAL_WITHDRAW_COIN, COIN_LIST } from './constants';
 
@@ -24,7 +24,6 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 	onRowAddButtonClick(name) {
 		console.log('coin Name ', name);
 		this.props.onAddCoin(true, name);
-		// this.props.getCoinsList(name);
 	}
 
 	onRowMinusButtonClick(name) {
@@ -33,8 +32,17 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 		this.props.onWithdrawCoin(true, name);
 	}
 
+	componentWillReceiveProps(props){
+
+		if(props.resultResponse.resultResponse === true){
+			alert(props.resultResponse.resultResponseStatus === true?'SENT':'FAILED');
+			props.onSendCoinsResponseSuccess();
+		}
+
+	}
 	componentDidMount() {
 		console.log('WALLET componentDidMount');
+
 		this.props.getCoinsList();
 	}
 
@@ -67,7 +75,7 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
             Bitcoin Amount
           </Col>
           <Col sm={8}>
-            <FormControl  type="text" value={this.props.email} />
+            <FormControl  type="text" value={this.props.amount} onChange={this._changeAmount.bind(this)}/>
           </Col>
         </FormGroup>
         <FormGroup controlId="formHorizontalEmail">
@@ -75,7 +83,7 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
             Address
           </Col>
           <Col sm={8}>
-            <FormControl  type="text" value={this.props.email} />
+            <FormControl  type="text" value={this.props.sendingAddress} onChange={this._changeSendingAddress.bind(this)} />
           </Col>
         </FormGroup>
       </form>
@@ -94,7 +102,16 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={()=>this.props.onRequestAddress(this.props.coinType)}>{ this.props.modalType == MODAL_ADD_COIN ?  'Generate Address' : 'Transfer' }</Button>
+              { this.props.modalType == MODAL_ADD_COIN ?
+								<Button onClick={()=>this.props.onRequestAddress(this.props.coinType)}>
+								 		Generate Address
+								 </Button>
+								 :
+								 <Button onClick={()=>this.props.onSendCoin(this.props.amount,this.props.sendingAddress)}>
+								 Transfer
+							 </Button>
+									 }
+
             </Modal.Footer>
           </Modal>
 
@@ -115,6 +132,8 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 
         <Grid>
           <Row className="show-grid balances">
+
+
             <h1>ACCOUNT BALANCES (ESTIMATED VALUE: 0.00000000 BTC)
 							<Button bsStyle="primary" onClick={this.componentDidMount.bind(this)}>Refresh</Button>
 						</h1>
@@ -214,6 +233,31 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 		);
 	}
 
+	_changeAmount(evt) {
+		var newState = fromJS({
+			amount: evt.target.value,
+			sendingAddress: this.props.sendingAddress
+		});
+		this._emitChange(newState);
+	}
+
+	_changeSendingAddress(evt) {
+		var newState = fromJS({
+			amount: this.props.amount,
+			sendingAddress: evt.target.value
+		});
+		this._emitChange(newState);
+	}
+
+	_emitChange(newState) {
+		this.props.onChangeForm(newState.get('amount'), newState.get('sendingAddress'));
+	}
+
+	// _onSubmit(evt) {
+	// 	evt.preventDefault();
+	// 	this.props.onSendCoin(this.props.amount, this.props.sendingAddress);
+	// }
+
 }
 
 
@@ -223,6 +267,9 @@ const mapStateToProps = createStructuredSelector({
 	coinType: makeCoinType(),
 	coins: makeCoinList(),
 	address: makeAddress(),
+	amount: makeAmount(),
+	sendingAddress: makeSendingAddress(),
+	resultResponse: makeSendCoinResponse()
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -231,6 +278,9 @@ export function mapDispatchToProps(dispatch) {
 		getCoinsList: () => dispatch(getCoins()),
 		onWithdrawCoin: (show, name) => dispatch(withdrawCoin(show, name)),
 		onRequestAddress: (coinType) => dispatch(requestAddress(coinType)),
+		onChangeForm: (amount, sendingAddress) => dispatch(changeForm(amount, sendingAddress)),
+		onSendCoin: (amount, sendingAddress) => dispatch(sendCoins( amount, sendingAddress)),
+		onSendCoinsResponseSuccess: () => dispatch(sendCoinsResponseSuccess()),
 	};
 }
 

@@ -27,6 +27,27 @@ const makeAddress = () => createSelector(
 	(walletState) => walletState.get('address')
 );
 
+const makeAmount = () => createSelector(
+	selectWallet,
+	(walletState) => walletState.get('amount')
+);
+
+const makeSendingAddress = () => createSelector(
+	selectWallet,
+	(walletState) => walletState.get('sendingAddress')
+);
+
+const makeSendCoinResponse = () => createSelector(
+	selectWallet,
+	(walletState) => {
+		return {
+			resultResponseStatus: walletState.get('resultResponseStatus'),
+			resultResponse: walletState.get('resultResponse')
+		}
+	}
+);
+
+
 
 export {
 	selectWallet,
@@ -35,4 +56,8 @@ export {
 	makeModalType,
 	makeCoinList,
 	makeAddress,
+	makeAmount,
+	makeSendingAddress,
+	makeSendCoinResponse,
+
 };

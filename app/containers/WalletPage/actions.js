@@ -5,6 +5,10 @@ import {
 	COIN_LIST_RECIEVED,
 	REQUEST_ADDRESS,
 	ADDRESS_RECIEVED,
+	CHANGE_FORM,
+	SEND_COIN,
+	SEND_COIN_RESPONSE,
+	SEND_COIN_RESPONSE_SUCCESS
 } from './constants';
 
 export function addCoin(show, coinType, address) {
@@ -30,7 +34,7 @@ export function getCoins() {
 }
 
 export function getCoinsRecieved(coins) {
-	console.log('getCoinsRecieved');
+
 	return {
 		type: COIN_LIST_RECIEVED,
 		coins
@@ -49,5 +53,34 @@ export function addressRecieved(address, coinType) {
 		type: ADDRESS_RECIEVED,
 		address,
 		coinType,
+	};
+}
+
+export function changeForm(amount, sendingAddress) {
+	return {
+		type: CHANGE_FORM,
+		amount,
+		sendingAddress
+	};
+}
+
+export function sendCoins(amount, sendingAddress) {
+	return {
+		type: SEND_COIN,
+		amount,
+		sendingAddress
+	};
+}
+
+export function sendCoinsResponse(result) {
+	return {
+		type: SEND_COIN_RESPONSE,
+		result
+	};
+}
+
+export function sendCoinsResponseSuccess() {
+	return {
+		type: SEND_COIN_RESPONSE_SUCCESS
 	};
 }

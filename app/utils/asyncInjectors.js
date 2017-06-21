@@ -60,8 +60,16 @@ export function injectAsyncSagas(store, isValid) {
 			'(app/utils...) injectAsyncSagas: Received an empty `sagas` array'
 		);
 
-		sagas.map(store.runSaga);
-	};
+		const prevSagas = [];
+		sagas.forEach((saga) => {
+			if (!prevSagas.includes(saga)) {
+				store.runSaga(saga);
+				prevSagas.push(saga);
+			}
+		});
+
+		// sagas.map(store.runSaga);
+	}
 }
 
 export function injectAsyncSaga(store, isValid) {

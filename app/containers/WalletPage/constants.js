@@ -17,3 +17,7 @@ export const REQUEST_ADDRESS = 'gcd/Wallet/REQUEST_ADDRESS';
 export const COIN_LIST = 'gcd/Wallet/COIN_LIST';
 export const COIN_LIST_RECIEVED = 'gcd/Wallet/COIN_LIST_RECIEVED';
 export const ADDRESS_RECIEVED = 'gcd/Wallet/ADDRESS_RECIEVED';
+export const CHANGE_FORM = 'gcd/Wallet/CHANGE_FORM';
+export const SEND_COIN = 'gcd/Wallet/SEND_COIN';
+export const SEND_COIN_RESPONSE = 'gcd/Wallet/SEND_COIN_RESPONSE';
+export const SEND_COIN_RESPONSE_SUCCESS = 'gcd/Wallet/SEND_COIN_RESPONSE_SUCCESS';

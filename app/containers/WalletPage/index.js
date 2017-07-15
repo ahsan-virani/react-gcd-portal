@@ -107,7 +107,7 @@ class WalletPage extends React.PureComponent { // eslint-disable-line react/pref
 								 		Generate Address
 								 </Button>
 								 :
-								 <Button disabled={this.props.sendCoinInProgress} onClick={()=>this.props.onSendCoin(this.props.amount,this.props.sendingAddress)}>
+								 <Button disabled={this.props.sendCoinInProgress} onClick={()=>this.props.onSendCoin(this.props.amount,this.props.sendingAddress,this.props.coinType)}>
 								 Transfer
 							 </Button>
 									 }
@@ -280,7 +280,7 @@ export function mapDispatchToProps(dispatch) {
 		onWithdrawCoin: (show, name) => dispatch(withdrawCoin(show, name)),
 		onRequestAddress: (coinType) => dispatch(requestAddress(coinType)),
 		onChangeForm: (amount, sendingAddress) => dispatch(changeForm(amount, sendingAddress)),
-		onSendCoin: (amount, sendingAddress) => dispatch(sendCoins( amount, sendingAddress)),
+		onSendCoin: (amount, sendingAddress,coinType) => dispatch(sendCoins( amount, sendingAddress,coinType)),
 		onSendCoinsResponseSuccess: () => dispatch(sendCoinsResponseSuccess()),
 	};
 }

@@ -59,7 +59,7 @@ function* getCoins() {
 function* sendCoins(data) {
 
 	try {
-		const sendCoinsResponse = yield call(auth.sendCoins, data.amount, data.sendingAddress);
+		const sendCoinsResponse = yield call(auth.sendCoins, data.amount, data.sendingAddress, data.coinType);
 		if (sendCoinsResponse) {
 
 			yield put({ type: SEND_COIN_RESPONSE, result: true });

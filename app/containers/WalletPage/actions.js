@@ -64,11 +64,12 @@ export function changeForm(amount, sendingAddress) {
 	};
 }
 
-export function sendCoins(amount, sendingAddress) {
+export function sendCoins(amount, sendingAddress, coinType) {
 	return {
 		type: SEND_COIN,
 		amount,
-		sendingAddress
+		sendingAddress,
+		coinType
 	};
 }
 

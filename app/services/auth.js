@@ -120,7 +120,7 @@ const auth = {
 			.catch(e => { return Promise.reject(e) });
 	},
 
-	sendCoins(amount, sendingAddress, comment = 'comment', toComment = 'to comment', altClient = false) {
+	sendCoins(amount, sendingAddress, coinType, comment = 'comment', toComment = 'to comment', altClient = false) {
 		const options = {
 			method: 'POST',
 			headers: {
@@ -130,6 +130,7 @@ const auth = {
 			body: JSON.stringify({
 				amount,
 				sendingAddress,
+				coinType,
 				comment,
 				toComment,
 				altClient
